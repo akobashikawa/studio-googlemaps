@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style type="text/css">
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+      height: 100%;
+      display: flex;
+    }
+    .form {
+      flex: 0;
+    }
+    #map {
+        flex: 1 0 50%;
+        height: 100%;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form">
+            <input type="number" class="lat" placeholder="lat" value="-12.1199408">
+            <input type="number" class="lng" placeholder="lng" value="-77.037241">
+            <button class="center-btn">Center</button>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script type="text/javascript">
+    var map;
+
+    function initMap(lat, lng) {
+        lat = lat == undefined ? 0 : 1*lat;
+        lng = lng == undefined ? 0 : 1*lng;
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: lat,
+                lng: lng
+            },
+            zoom: 18
+        });
+    }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDv2WqFVImOwcoTNdmFznu3mJZ_DCU0VSk&callback=initMap">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+    <script>
+      $('.center-btn').on('click', function() {
+        var lat = $('.lat').val();
+        var lng = $('.lng').val();
+        console.log(lat, lng);
+        initMap(lat, lng);
+      });
+    </script>
+</body>
+
+</html>
