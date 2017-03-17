@@ -40,6 +40,9 @@
             <input type="number" class="lng" placeholder="lng">
             <button class="center-btn">Center</button>
             <button class="mark-btn">Mark</button>
+            <button class="hide-markers-btn">Hide markers</button>
+            <button class="show-markers-btn">Show markers</button>
+            <button class="delete-markers-btn">Delete markers</button>
         </div>
         <div id="map"></div>
     </div>
@@ -71,10 +74,14 @@
           updateInputs(newCenter);
         });
 
+        var image = {
+          url: 'marker-purple-32.png'
+        };
         var markerOptions = {
           position: center,
           map: map,
-          label: 'Start'
+          label: 'Start',
+          icon: image
         };
         var marker = new google.maps.Marker(markerOptions);
         markers.push(marker);
@@ -100,13 +107,28 @@
         var lng = 1 * $('.lng').val();
         var newCenter = {lat: lat, lng: lng};
         var label = (markers.length) + '';
+        var image = {
+          url: 'marker-blue-32.png'
+        };
         var markerOptions = {
           position: newCenter,
           map: map,
-          label: label
+          label: label,
+          icon: image
         };
         var marker = new google.maps.Marker(markerOptions);
         markers.push(marker);
+      });
+
+      function setAllMapsTo(map) {
+        markers.map(marker => marker.setMap(map));
+      }
+      $('.hide-markers-btn').on('click', () => setAllMapsTo(null));
+      $('.show-markers-btn').on('click', () => setAllMapsTo(map));
+      $('.delete-markers-btn').on('click', () => {
+        setAllMapsTo(null);
+        markers.splice(1);
+        setAllMapsTo(map);
       });
     </script>
 </body>
