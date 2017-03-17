@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mark Point</title>
+    <style type="text/css">
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+      height: 100%;
+      display: flex;
+    }
+    .form {
+      flex: 0;
+    }
+    #map {
+        flex: 1 0 50%;
+        height: 100%;
+    }
+    .my-control {
+      background: rgba(0,255,0,0.6);
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 100px;
+      cursor: pointer;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form">
+            <input type="number" class="lat" placeholder="lat">
+            <input type="number" class="lng" placeholder="lng">
+            <button class="center-btn">Center</button>
+            <button class="mark-btn">Mark</button>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+    <script type="text/javascript">
+    var map;
+    var markers = [];
+    var defPos = {lat: -12.1199408, lng: -77.037241};
+
+    function updateInputs(center) {
+      $('.lat').val(center.lat);
+      $('.lng').val(center.lng);
+    }
+
+    function init() {
+      updateInputs(defPos)
+      initMap(defPos);
+    }
+
+    function initMap(center) {
+        var mapOptions = {
+          center: center,
+          zoom: 18,
+          disableDefaultUI: true
+        };
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        map.addListener('center_changed', function() {
+          var newCenter = map.getCenter();
+          updateInputs(newCenter);
+        });
+
+        var markerOptions = {
+          position: center,
+          map: map,
+          label: 'Start'
+        };
+        var marker = new google.maps.Marker(markerOptions);
+        markers.push(marker);
+
+        var myControl = $('<div class="my-control">Start</div>').on('click', function() {
+            map.setCenter(defPos);
+        });
+        myControl.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(myControl[0]);
+    }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDv2WqFVImOwcoTNdmFznu3mJZ_DCU0VSk&callback=init">
+    </script>
+    <script>
+      $('.center-btn').on('click', function() {
+        var lat = 1 * $('.lat').val();
+        var lng = 1 * $('.lng').val();
+        var newCenter = {lat: lat, lng: lng};
+        map.setCenter(newCenter);
+      });
+      $('.mark-btn').on('click', function() {
+        var lat = 1 * $('.lat').val();
+        var lng = 1 * $('.lng').val();
+        var newCenter = {lat: lat, lng: lng};
+        var label = (markers.length) + '';
+        var markerOptions = {
+          position: newCenter,
+          map: map,
+          label: label
+        };
+        var marker = new google.maps.Marker(markerOptions);
+        markers.push(marker);
+      });
+    </script>
+</body>
+
+</html>
